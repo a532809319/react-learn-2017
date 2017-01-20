@@ -10,7 +10,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  ListView
 } from 'react-native';
 // import  React from 'react-native';
 //
@@ -22,6 +23,7 @@ import {
 //   Text,
 // }=React;
 class   HeaderText extends React.Component{
+
   render(){
     return(
       <Text style={styles.itemText}>
@@ -31,22 +33,35 @@ class   HeaderText extends React.Component{
   }
 }
   class aa  extends React.Component{
+    constructor(props ){
+      super(props);
+      let movies=[
+        {title:'萧克的救赎'},
+        {title:'这个杀手不太冷a'},
+        {title:'这个杀手不太冷a'},
+        {title:'阿甘正传0'},
+        {title:'霸王别姬'},
+        {title:'美丽人生'}
+      ];
+
+      let dataSource = new ListView.DataSource({
+        rowHasChanged:(row1,row2) => row1 !== row2
+      });
+      this.state={
+        movies:dataSource.cloneWithRows(movies)
+      };
+    }
+
     render(){
       return(
       <View style={styles.container
       }>
-
-    <Image style={styles.backgroundImage}
-       source={{uri:'https://img3.doubanio.com/view/photo/photo/public/p2412095853.jpg'}}>
-    <View   style={{backgroundColor:'rgba(123, 237, 100,0.5)',alignItems:'center'}}>
-      <Text style={{color:'black',fontSize:26}}>
-             世界大战
-      </Text>
-      <Text style={{color:'rgb(123, 237, 100)',fontSize:15}}>
-        1000
-      </Text>
-    </View>
-  </Image>
+     <ListView
+      dataSource={this.state.movies}
+      renderRow={
+        movie=><Text style={styles.item}>{movie.title}</Text>
+      }
+     />
 
       </View>
       );
@@ -102,11 +117,13 @@ const styles = StyleSheet.create({
 // //textDecorationStyle:'dotted' dashed double
 //   },
   item:{
-    backgroundColor:'#fff',
-    borderWidth:1,
-flex:1,
-    borderColor:'rgb(46, 28, 117)',
-    margin:6
+//     backgroundColor:'#fff',
+//     borderWidth:1,
+// flex:1,
+//     borderColor:'rgb(46, 28, 117)',
+    margin:6,
+    fontSize:26,
+    color:'red'
   },
   itemOne:{flex:2},
   itemTwo:{},
