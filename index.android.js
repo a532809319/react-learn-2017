@@ -32,26 +32,43 @@ class   HeaderText extends React.Component{
     );
   }
 }
+
+const REQUEST_URL = 'https://api.douban.com/v2/movie/top250';
   class aa  extends React.Component{
     constructor(props ){
       super(props);
-      let movies=[
-        {title:'萧克的救赎'},
-        {title:'这个杀手不太冷a'},
-        {title:'这个杀手不太冷a'},
-        {title:'阿甘正传0'},
-        {title:'霸王别姬'},
-        {title:'美丽人生'}
-      ];
+      // let movies=[
+      //   {title:'萧克的救赎'},
+      //   {title:'这个杀手不太冷a'},
+      //   {title:'这个杀手不太冷a'},
+      //   {title:'阿甘正传0'},
+      //   {title:'霸王别姬'},
+      //   {title:'美丽人生'}
+      // ];
 
-      let dataSource = new ListView.DataSource({
-        rowHasChanged:(row1,row2) => row1 !== row2
-      });
+      // let dataSource =
       this.state={
-        movies:dataSource.cloneWithRows(movies)
+        movies:new ListView.DataSource({
+          rowHasChanged:(row1,row2) => row1 !== row2
+        })
       };
+      this.fetchData();
+    //  console.log(this.state.movies);
     }
 
+   fetchData(){
+     fetch(REQUEST_URL)
+     .then(response => response.json())
+     .then(responseData => {
+    //   console.log(responseData);
+    this.setState({
+      movies:this.state.movies
+      .cloneWithRows(responseData.subjects)
+    });
+     })
+     .done();
+
+   }
     render(){
       return(
       <View style={styles.container
